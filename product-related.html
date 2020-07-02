@@ -1,22 +1,14 @@
 
 {% assign collection = collections[].all %}
-<section class="section related__products bg--white">
-    <div class="container">
-      <div class="section__header text-center">
-        <h1 class="section__title text-center">Related Products</h1>
-      </div>
-      <div class="section__content">
-        <div class="featured related">
-          {% paginate collection.products by 4 %}
-            {% for product in collection.products %}
-              <div class="featured__product related-product-{{ forloop.index | minus: 1 }}"></div>
-            {% endfor %}
-          {% endpaginate %}
-  
-        </div>
-      </div>
-    </div>
-</section>
+
+<div class="related__products">
+  {% paginate collection.products by 4 %}
+    {% for product in collection.products %}
+      <div class="product related__product-{{ forloop.index | minus: 1 }}"></div>
+    {% endfor %}
+  {% endpaginate %}
+</div>
+      
 
 <script>
     var allproducts = [
@@ -37,20 +29,19 @@
       recomenddedProducts.push(allproducts[randomNumber]);
       allproducts.splice(randomNumber, 1);
       console.log(recomenddedProducts[i].productTitle);
-      var element = document.querySelector('.related-product-' + i);
+      var element = document.querySelector('.related__product-' + i);
       var createElement = `
-        <div class="featured__image">
+        <div class="product__image">
             <a href="${recomenddedProducts[i].productUrl}">
                 <img data-src="${recomenddedProducts[i].productImageUrl}" class="image" />
             </a>
         </div>
-        <div class="featured__details">
-            <div class="featured__text">
-                <div class="featured__info">
-                    <h4 class="featured__title">${recomenddedProducts[i].productTitle}</h4>
-                    <h4 class="featured__price">${recomenddedProducts[i].productPrice}</h4>
+        <div class="product__details">
+                <div class="product__info">
+                    <h4 class="product__title">${recomenddedProducts[i].productTitle}</h4>
+                    <h4 class="product__price">${recomenddedProducts[i].productPrice}</h4>
                 </div>
-                <div class="featured__info" style="margin-top: 10px;">
+                <div class="product__form">
                     {% form "product", product %}
                         <input type="hidden" name="id" value="${recomenddedProducts[i].productVariantId}" />
                         <input id="" type="submit" value="Buy Now" class="btn btn--dark btn--sm" />
@@ -59,8 +50,7 @@
                         <button data-cart-add="${recomenddedProducts[i].productVariantId}" class="btn btn--dark-outline btn--sm">Add to Cart </button>
                     </div>
                 </div>
-            </div>
-        </div>
+         </div>
       `
       element.innerHTML = createElement ;
     }    
