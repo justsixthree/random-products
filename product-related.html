@@ -1,6 +1,7 @@
-
+<!--Assign Collection "all" to get all products-->
 {% assign collection = collections[].all %}
 
+<section class="related">
 <div class="related__products">
   {% paginate collection.products by 4 %}
     {% for product in collection.products %}
@@ -8,46 +9,46 @@
     {% endfor %}
   {% endpaginate %}
 </div>
-      
+</section>
 
 <script>
     var allproducts = [
-    {% for product in collection.products %}
-        {
-            productTitle: "{{ product.title  | truncatewords: 2  | strip_html }}",
-            productImageUrl : "{{ product.featured_image | img_url: '500x' }}",
-            productPrice : "{{ product.price | money}}",
-            productVariantId : "{{ product.variants.first.id }}",
-            productUrl: "{{ product.url }}"
-        },
-    {% endfor %}
-    ]
+      {% for product in collection.products %}
+          {
+              productTitle: "{{ product.title }}",
+              productImageUrl : "{{ product.featured_image | img_url: 'medium' }}",
+              productPrice : "{{ product.price | money }}",
+              productVariantId : "{{ product.variants.first.id }}",
+              productUrl: "{{ product.url }}"
+          },
+      {% endfor %}
+    ];
   
-    var recomenddedProducts = [];
+    var relatedProducts = [];
     for (var i = 0; i < 4; i++) {
       var randomNumber = Math.floor(Math.random() * allproducts.length);
-      recomenddedProducts.push(allproducts[randomNumber]);
+      relatedProducts.push(allproducts[randomNumber]);
       allproducts.splice(randomNumber, 1);
-      console.log(recomenddedProducts[i].productTitle);
+      console.log(relatedProducts[i].productTitle);
       var element = document.querySelector('.related__product-' + i);
       var createElement = `
         <div class="product__image">
-            <a href="${recomenddedProducts[i].productUrl}">
-                <img data-src="${recomenddedProducts[i].productImageUrl}" class="image" />
+            <a href="${relatedProducts[i].productUrl}">
+                <img data-src="${relatedProducts[i].productImageUrl}" class="image" />
             </a>
         </div>
         <div class="product__details">
                 <div class="product__info">
-                    <h4 class="product__title">${recomenddedProducts[i].productTitle}</h4>
-                    <h4 class="product__price">${recomenddedProducts[i].productPrice}</h4>
+                    <h4 class="product__title">${relatedProducts[i].productTitle}</h4>
+                    <h4 class="product__price">${relatedProducts[i].productPrice}</h4>
                 </div>
                 <div class="product__form">
                     {% form "product", product %}
-                        <input type="hidden" name="id" value="${recomenddedProducts[i].productVariantId}" />
-                        <input id="" type="submit" value="Buy Now" class="btn btn--dark btn--sm" />
+                        <input type="hidden" name="id" value="${relatedProducts[i].productVariantId}" />
+                        <input id="" type="submit" value="Buy Now" class="btn" />
                     {% endform %}
                     <div class="addToCart">
-                        <button data-cart-add="${recomenddedProducts[i].productVariantId}" class="btn btn--dark-outline btn--sm">Add to Cart </button>
+                        <button type="button" data-cart-add="${relatedProducts[i].productVariantId}" class="btn">Add to Cart </button>
                     </div>
                 </div>
          </div>
